@@ -1,6 +1,14 @@
-// types/models.ts
+export interface FilmDto {
+    id: number;
+    title: string;
+    year: number;
+    link?: string;
+    director?: DirectorDto;
+    actors?: ActorDto[];
+}
+
 export interface ActorDto {
-    id?: number;
+    id: number;
     firstName: string;
     secondName: string;
     lastName: string;
@@ -13,13 +21,4 @@ export interface DirectorDto {
     secondName: string;
     lastName: string;
     films?: FilmDto[];
-}
-
-export interface FilmDto {
-    id: number;
-    title: string;
-    year?: number;
-    link?: string;
-    director?: DirectorDto;
-    actors?: ActorDto[];
 }

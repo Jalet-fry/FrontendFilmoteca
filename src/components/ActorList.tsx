@@ -1,7 +1,7 @@
 // components/ActorList.tsx
 import { useEffect, useState } from "react";
 import { ActorDto } from "../types/models";
-import { getActors, deleteActor, getActorById, updateActor } from "../api/api";
+import { getActors, deleteActor, getActorById, putActor } from "../api/api";
 
 export const ActorList = () => {
     const [actors, setActors] = useState<ActorDto[]>([]);
@@ -28,7 +28,7 @@ export const ActorList = () => {
     const handleUpdate = async (e: React.FormEvent) => {
         e.preventDefault();
         if (editingActor && editingActor.id) {
-            await updateActor(editingActor.id, editingActor);
+            await putActor(editingActor.id, editingActor);
             setEditingActor(null);
             loadActors();
         }

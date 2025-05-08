@@ -1,9 +1,14 @@
 // components/ActorForm.tsx
-import { useState } from "react";
-import { ActorDto } from "../types/models";
-import { createActor } from "../api/api";
+import {useState} from "react";
+import {ActorDto} from "../types/models";
+import {createActor} from "../api/api";
+import {FormInstance} from "antd";
 
-export const ActorForm = () => {
+interface ActorFormProps {
+    form?: FormInstance<any>
+}
+
+export const ActorForm = ({form}: ActorFormProps) => {
     const [actor, setActor] = useState<Omit<ActorDto, "id">>({
         firstName: "",
         secondName: "",
@@ -13,7 +18,7 @@ export const ActorForm = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         await createActor(actor);
-        setActor({ firstName: "", secondName: "", lastName: "" });
+        setActor({firstName: "", secondName: "", lastName: ""});
     };
 
     return (
@@ -33,7 +38,7 @@ export const ActorForm = () => {
                 onChange={(e) => setActor({...actor, lastName: e.target.value})}
                 placeholder="lastName"
             />
-            <button type="submit">Добавить</button>
+            <button type="submit">Add</button>
         </form>
     );
 };

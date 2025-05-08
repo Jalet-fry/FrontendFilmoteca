@@ -1,9 +1,13 @@
-// components/DirectorForm.tsx
-import { useState } from "react";
-import { DirectorDto } from "../types/models";
-import { createDirector } from "../api/api";
+import {useState} from "react";
+import {DirectorDto} from "../types/models";
+import {createDirector} from "../api/api";
+import {FormInstance} from "antd";
 
-export const DirectorForm = () => {
+interface DirectorFormProps {
+    form?: FormInstance<any>
+}
+
+export const DirectorForm = ({form}: DirectorFormProps) => {
     const [director, setDirector] = useState<Omit<DirectorDto, "id">>({
         firstName: "",
         secondName: "",
@@ -13,7 +17,7 @@ export const DirectorForm = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         await createDirector(director);
-        setDirector({ firstName: "", secondName: "", lastName: "" });
+        setDirector({firstName: "", secondName: "", lastName: ""});
     };
 
     return (

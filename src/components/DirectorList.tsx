@@ -1,7 +1,7 @@
 // components/DirectorList.tsx
 import { useEffect, useState } from "react";
 import { DirectorDto } from "../types/models";
-import { getDirectors, deleteDirector, updateDirector } from "../api/api";
+import { getDirectors, deleteDirector, putDirector } from "../api/api";
 
 export const DirectorList = () => {
     const [directors, setDirectors] = useState<DirectorDto[]>([]);
@@ -28,7 +28,7 @@ export const DirectorList = () => {
     const handleUpdate = async (e: React.FormEvent) => {
         e.preventDefault();
         if (editingDirector && editingDirector.id) {
-            await updateDirector(editingDirector.id, editingDirector);
+            await putDirector(editingDirector.id, editingDirector);
             setEditingDirector(null);
             loadDirectors();
         }
