@@ -78,6 +78,7 @@ const FilmsPage: React.FC = () => {
         setIsModalVisible(true);
     };
 
+
     const handleAddClick = () => {
         form.resetFields();
         setEditingFilm(null);

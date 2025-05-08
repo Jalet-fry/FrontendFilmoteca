@@ -4,10 +4,17 @@ import { FilmDto } from "../types/models";
 
 const { Option } = Select;
 
+interface Person {
+    id: number;
+    firstName: string;
+    secondName?: string;
+    lastName: string;
+}
+
 interface FilmFormProps {
     form: any;
-    directors: any[];
-    actors: any[];
+    directors: Person[];
+    actors: Person[];
 }
 
 export const FilmForm: React.FC<FilmFormProps> = ({ form, directors, actors }) => {
@@ -37,7 +44,7 @@ export const FilmForm: React.FC<FilmFormProps> = ({ form, directors, actors }) =
                 <Select placeholder="Select director">
                     {directors.map(director => (
                         <Option key={director.id} value={director.id}>
-                            {director.firstName} {director.lastName}
+                            {director.firstName} {director.secondName} {director.lastName}
                         </Option>
                     ))}
                 </Select>
@@ -50,7 +57,7 @@ export const FilmForm: React.FC<FilmFormProps> = ({ form, directors, actors }) =
                 <Select mode="multiple" placeholder="Select actors">
                     {actors.map(actor => (
                         <Option key={actor.id} value={actor.id}>
-                            {actor.firstName} {actor.lastName}
+                            {actor.firstName} {actor.secondName} {actor.lastName}
                         </Option>
                     ))}
                 </Select>

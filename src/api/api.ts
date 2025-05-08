@@ -98,11 +98,11 @@ export const getFilmById = async (id: number): Promise<FilmDto> => {
     return response.json();
 };
 
-export const createFilm = async (actor: Omit<FilmDto, "id">): Promise<FilmDto> => {
+export const createFilm = async (film: Omit<FilmDto, "id">): Promise<FilmDto> => {
     const response = await fetch(`${API_URL}/films`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(actor),
+        body: JSON.stringify(film),
     });
     return response.json();
 };
