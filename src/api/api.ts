@@ -45,20 +45,19 @@ export const deleteActor = async (id: number): Promise<void> => {
     });
 };
 
-// Добавляем в api.ts
 // Directors
 export const getDirectors = async (): Promise<DirectorDto[]> => {
-    const response = await fetch(`${API_URL}/actors/all`);
+    const response = await fetch(`${API_URL}/directors/all`);
     return response.json();
 };
 
 export const getDirectorById = async (id: number): Promise<DirectorDto> => {
-    const response = await fetch(`${API_URL}/actors/${id}`);
+    const response = await fetch(`${API_URL}/directors/${id}`);
     return response.json();
 };
 
 export const createDirector = async (actor: Omit<DirectorDto, "id">): Promise<DirectorDto> => {
-    const response = await fetch(`${API_URL}/actors`, {
+    const response = await fetch(`${API_URL}/directors`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(actor),
@@ -67,7 +66,7 @@ export const createDirector = async (actor: Omit<DirectorDto, "id">): Promise<Di
 };
 
 export const putDirector = async (id: number, actor: DirectorDto): Promise<void> => {
-    await fetch(`${API_URL}/actors`, {
+    await fetch(`${API_URL}/directors`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(actor),
@@ -75,7 +74,7 @@ export const putDirector = async (id: number, actor: DirectorDto): Promise<void>
 };
 
 export const patchDirector = async (id: number, actor: Partial<DirectorDto>): Promise<void> => {
-    await fetch(`${API_URL}/actors`, {
+    await fetch(`${API_URL}/directors`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(actor),
@@ -83,24 +82,24 @@ export const patchDirector = async (id: number, actor: Partial<DirectorDto>): Pr
 };
 
 export const deleteDirector = async (id: number): Promise<void> => {
-    await fetch(`${API_URL}/actors/${id}`, {
+    await fetch(`${API_URL}/directors/${id}`, {
         method: "DELETE",
     });
 };
 
 //Film
 export const getFilms = async (): Promise<FilmDto[]> => {
-    const response = await fetch(`${API_URL}/actors/all`);
+    const response = await fetch(`${API_URL}/films/all`);
     return response.json();
 };
 
 export const getFilmById = async (id: number): Promise<FilmDto> => {
-    const response = await fetch(`${API_URL}/actors/${id}`);
+    const response = await fetch(`${API_URL}/films/${id}`);
     return response.json();
 };
 
 export const createFilm = async (actor: Omit<FilmDto, "id">): Promise<FilmDto> => {
-    const response = await fetch(`${API_URL}/actors`, {
+    const response = await fetch(`${API_URL}/films`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(actor),
@@ -109,7 +108,7 @@ export const createFilm = async (actor: Omit<FilmDto, "id">): Promise<FilmDto> =
 };
 
 export const putFilm = async (id: number, actor: FilmDto): Promise<void> => {
-    await fetch(`${API_URL}/actors`, {
+    await fetch(`${API_URL}/films`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(actor),
@@ -117,7 +116,7 @@ export const putFilm = async (id: number, actor: FilmDto): Promise<void> => {
 };
 
 export const patchFilm = async (id: number, actor: Partial<FilmDto>): Promise<void> => {
-    await fetch(`${API_URL}/actors`, {
+    await fetch(`${API_URL}/films`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(actor),
@@ -125,47 +124,7 @@ export const patchFilm = async (id: number, actor: Partial<FilmDto>): Promise<vo
 };
 
 export const deleteFilm = async (id: number): Promise<void> => {
-    await fetch(`${API_URL}/actors/${id}`, {
+    await fetch(`${API_URL}/films/${id}`, {
         method: "DELETE",
     });
 };
-// export const getDirectors = async (): Promise<DirectorDto[]> => {
-//     const response = await fetch(`${API_URL}/directors/all`);
-//     return response.json();
-// };
-//
-// export const getDirectorById = async (id: number): Promise<DirectorDto> => {
-//     const response = await fetch(`${API_URL}/directors/${id}`);
-//     return response.json();
-// };
-//
-// export const createDirector = async (director: Omit<DirectorDto, "id">): Promise<DirectorDto> => {
-//     const response = await fetch(`${API_URL}/directors`, {
-//         method: "POST",
-//         headers: { "Content-Type": "application/json" },
-//         body: JSON.stringify(director),
-//     });
-//     return response.json();
-// };
-//
-// export const putDirector = async (id: number, director: DirectorDto): Promise<void> => {
-//     await fetch(`${API_URL}/directors`, {
-//         method: "PUT",
-//         headers: { "Content-Type": "application/json" },
-//         body: JSON.stringify(director),
-//     });
-// };
-//
-// export const patchDirector = async (id: number, actor: Partial<DirectorDto>): Promise<void> => {
-//     await fetch(`${API_URL}/actors`, {
-//         method: "PATCH",
-//         headers: { "Content-Type": "application/json" },
-//         body: JSON.stringify(actor),
-//     });
-// };
-//
-// export const deleteDirector = async (id: number): Promise<void> => {
-//     await fetch(`${API_URL}/directors/${id}`, {
-//         method: "DELETE",
-//     });
-// };

@@ -84,6 +84,11 @@ const DirectorsPage: React.FC = () => {
             key: 'firstName',
         },
         {
+            title: 'Second Name',
+            dataIndex: 'secondName',
+            key: 'secondName',
+        },
+        {
             title: 'Last Name',
             dataIndex: 'lastName',
             key: 'lastName',
@@ -95,7 +100,7 @@ const DirectorsPage: React.FC = () => {
             render: (films: any[]) => (
                 <>
                     {films?.map(film => (
-                        <Tag key={film.id}>{film.title}</Tag>
+                        <Tag key={film.id}>{film.title} {film.year}</Tag>
                     ))}
                 </>
             ),

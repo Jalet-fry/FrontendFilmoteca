@@ -24,7 +24,7 @@ import { Layout, Menu } from 'antd';
 import { UserOutlined, VideoCameraOutlined, TeamOutlined } from '@ant-design/icons';
 import ActorsPage from './page/ActorPage';
 import DirectorsPage from './page/DirectorPage';
-// import FilmsPage from './page/FilmPage';
+import FilmsPage from './page/FilmPage';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -53,8 +53,8 @@ const App: React.FC = () => {
                             <Routes>
                                 <Route path="/actors" element={<ActorsPage />} />
                                 <Route path="/directors" element={<DirectorsPage />} />
-                                {/*<Route path="/films" element={<FilmsPage />} />*/}
-                                {/*<Route path="/" element={<FilmsPage />} />*/}
+                                <Route path="/films" element={<FilmsPage />} />
+                                <Route path="/" element={<FilmsPage />} />
                             </Routes>
                         </div>
                     </Content>

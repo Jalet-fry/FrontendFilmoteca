@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Modal, Space, Tag, message, Popconfirm, Form } from 'antd';
 import { getActors, createActor, putActor, deleteActor, patchActor} from '../api/api';
-import {ActorDto} from "../types/models";
+import {ActorDto, DirectorDto, FilmDto} from "../types/models";
 import { ActorForm } from '../components/ActorForm';
 import { FormInstance } from 'antd/es/form';
 import any = jasmine.any;
@@ -74,9 +74,56 @@ const ActorsPage: React.FC = () => {
         setIsModalVisible(true);
     };
 
-    let columns: any[];
-    columns = [
-        // ... (остальные колонки остаются без изменений)
+    const columns = [
+        {
+            title: 'ID',
+            dataIndex: 'id',
+            key: 'id',
+        },
+        {
+            title: 'First Name',
+            dataIndex: 'firstName',
+            key: 'firstName',
+        },
+        {
+            title: 'Second Name',
+            dataIndex: 'secondName',
+            key: 'secondName',
+        },
+        {
+            title: 'Last Name',
+            dataIndex: 'lastName',
+            key: 'lastName',
+        },
+        {
+            title: 'Films',
+            dataIndex: 'films',
+            key: 'films',
+            render: (films: any[]) => (
+                <>
+                    {films?.map(film => (
+                        <Tag key={film.id}>{film.title} {film.year}</Tag>
+                    ))}
+                </>
+            ),
+        },
+        {
+            title: 'Actions',
+            key: 'actions',
+            render: (_: any, record: ActorDto) => (
+                <Space size="middle">
+                    <Button onClick={() => handleEditClick(record)}>Edit</Button>
+                    <Popconfirm
+                        title="Are you sure to delete this actor?"
+                        onConfirm={() => handleDelete(record.id)}
+                        okText="Yes"
+                        cancelText="No"
+                    >
+                        <Button danger>Delete</Button>
+                    </Popconfirm>
+                </Space>
+            ),
+        },
     ];
 
     return (

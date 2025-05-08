@@ -104,7 +104,8 @@ const FilmsPage: React.FC = () => {
             title: 'Director',
             dataIndex: 'director',
             key: 'director',
-            render: (director: any) => director?.firstName + ' ' + director?.lastName,
+            render: (director: any) => director?.firstName + ' '
+                + director?.secondName + ' ' + director?.lastName,
         },
         {
             title: 'Actors',
@@ -113,7 +114,7 @@ const FilmsPage: React.FC = () => {
             render: (actors: any[]) => (
                 <>
                     {actors?.map(actor => (
-                        <Tag key={actor.id}>{actor.firstName} {actor.lastName}</Tag>
+                        <Tag key={actor.id}>{actor.firstName} {actor.secondName} {actor.lastName}</Tag>
                     ))}
                 </>
             ),
