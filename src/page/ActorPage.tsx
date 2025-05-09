@@ -1,17 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Button, Modal, Space, Tag, message, Popconfirm, Form } from 'antd';
-import { getActors, createActor, putActor, deleteActor, patchActor} from '../api/api';
-import {ActorDto, DirectorDto, FilmDto} from "../types/models";
-import { ActorForm } from '../components/ActorForm';
-import { FormInstance } from 'antd/es/form';
-import any = jasmine.any;
+import { Table, Button, Modal, Space, Tag, message, Popconfirm, Form, Input } from 'antd';
+import { getActors, createActor, putActor, deleteActor } from '../api/api';
+import { ActorDto } from "../types/models";
 
 const ActorsPage: React.FC = () => {
     const [actors, setActors] = useState<ActorDto[]>([]);
     const [loading, setLoading] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [editingActor, setEditingActor] = useState<ActorDto | null>(null);
-    const [form] = Form.useForm<ActorDto>();
+    const [form] = Form.useForm();
 
     useEffect(() => {
         fetchActors();
@@ -32,17 +29,23 @@ const ActorsPage: React.FC = () => {
     const handleSubmit = async () => {
         try {
             const values = await form.validateFields();
+            const actorDto: ActorDto = {
+                ...(editingActor || {}),
+                ...values
+            };
+
             if (editingActor) {
-                await putActor(editingActor.id, values);
+                await putActor(actorDto);
                 message.success('Actor updated successfully');
             } else {
-                await createActor(values);
+                await createActor(actorDto);
                 message.success('Actor created successfully');
             }
+
             handleModalClose();
             fetchActors();
         } catch (error) {
-            message.error('Error saving actor');
+            message.error(error instanceof Error ? error.message : 'Error saving actor');
         }
     };
 
@@ -102,7 +105,7 @@ const ActorsPage: React.FC = () => {
             render: (films: any[]) => (
                 <>
                     {films?.map(film => (
-                        <Tag key={film.id}>{film.title} {film.year}</Tag>
+                        <Tag key={film.id}>{film.title} ({film.year})</Tag>
                     ))}
                 </>
             ),
@@ -115,7 +118,7 @@ const ActorsPage: React.FC = () => {
                     <Button onClick={() => handleEditClick(record)}>Edit</Button>
                     <Popconfirm
                         title="Are you sure to delete this actor?"
-                        onConfirm={() => handleDelete(record.id)}
+                        onConfirm={() => handleDelete(record.id!)}
                         okText="Yes"
                         cancelText="No"
                     >
@@ -149,10 +152,40 @@ const ActorsPage: React.FC = () => {
                 visible={isModalVisible}
                 onOk={handleSubmit}
                 onCancel={handleModalClose}
-                width={800}
+                width={600}
                 destroyOnClose
             >
-                <ActorForm form={form} />
+                <Form form={form} layout="vertical">
+                    <Form.Item
+                        name="firstName"
+                        label="First Name"
+                        rules={[
+                            { required: true, message: 'Please input first name!' },
+                            { max: 20, message: 'Max length is 20 characters' }
+                        ]}
+                    >
+                        <Input />
+                    </Form.Item>
+
+                    <Form.Item
+                        name="secondName"
+                        label="Second Name"
+                        rules={[{ max: 20, message: 'Max length is 20 characters' }]}
+                    >
+                        <Input />
+                    </Form.Item>
+
+                    <Form.Item
+                        name="lastName"
+                        label="Last Name"
+                        rules={[
+                            { required: true, message: 'Please input last name!' },
+                            { max: 20, message: 'Max length is 20 characters' }
+                        ]}
+                    >
+                        <Input />
+                    </Form.Item>
+                </Form>
             </Modal>
         </div>
     );

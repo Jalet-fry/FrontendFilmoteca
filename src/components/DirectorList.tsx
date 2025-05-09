@@ -28,7 +28,7 @@ export const DirectorList = () => {
     const handleUpdate = async (e: React.FormEvent) => {
         e.preventDefault();
         if (editingDirector && editingDirector.id) {
-            await putDirector(editingDirector.id, editingDirector);
+            await putDirector(editingDirector);
             setEditingDirector(null);
             loadDirectors();
         }

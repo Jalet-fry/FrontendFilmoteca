@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Modal, Space, Tag, message, Popconfirm, Form } from 'antd';
-import { getFilms, createFilm, putFilm, patchFilm, deleteFilm, getActors, getDirectors } from '../api/api';
+import { getFilms, createFilm, putFilm, deleteFilm, getActors, getDirectors } from '../api/api';
 import { FilmForm } from '../components/FilmForm';
 import { FilmDto } from "../types/models";
 
@@ -38,17 +38,28 @@ const FilmsPage: React.FC = () => {
     const handleSubmit = async () => {
         try {
             const values = await form.validateFields();
+
+            const filmDto: FilmDto = {
+                ...(editingFilm || {}),
+                id : values.id,
+                title: values.title,
+                year: values.year,
+                director: directors.find(d => d.id === values.directorId)!,
+                actors: actors.filter(a => values.actorIds?.includes(a.id)) || []
+            };
+
             if (editingFilm) {
-                await putFilm(editingFilm.id, values);
-                message.success('Film put successfully');
+                await putFilm(filmDto);
+                message.success('Film updated successfully');
             } else {
-                await createFilm(values);
+                await createFilm(filmDto);
                 message.success('Film created successfully');
             }
+
             handleModalClose();
             fetchData();
         } catch (error) {
-            message.error('Error saving film');
+            message.error(error instanceof Error ? error.message : 'Error saving film');
         }
     };
 
@@ -78,7 +89,6 @@ const FilmsPage: React.FC = () => {
         setIsModalVisible(true);
     };
 
-
     const handleAddClick = () => {
         form.resetFields();
         setEditingFilm(null);
@@ -105,8 +115,9 @@ const FilmsPage: React.FC = () => {
             title: 'Director',
             dataIndex: 'director',
             key: 'director',
-            render: (director: any) => director?.firstName + ' '
-                + director?.secondName + ' ' + director?.lastName,
+            render: (director: any) => (
+                `${director?.firstName} ${director?.secondName || ''} ${director?.lastName}`
+            ),
         },
         {
             title: 'Actors',
@@ -115,7 +126,9 @@ const FilmsPage: React.FC = () => {
             render: (actors: any[]) => (
                 <>
                     {actors?.map(actor => (
-                        <Tag key={actor.id}>{actor.firstName} {actor.secondName} {actor.lastName}</Tag>
+                        <Tag key={actor.id}>
+                            {`${actor.firstName} ${actor.secondName || ''} ${actor.lastName}`}
+                        </Tag>
                     ))}
                 </>
             ),
@@ -128,7 +141,7 @@ const FilmsPage: React.FC = () => {
                     <Button onClick={() => handleEditClick(record)}>Edit</Button>
                     <Popconfirm
                         title="Are you sure to delete this film?"
-                        onConfirm={() => handleDelete(record.id)}
+                        onConfirm={() => handleDelete(record.id!)}
                         okText="Yes"
                         cancelText="No"
                     >

@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Button, Modal, Space, Tag, message, Popconfirm, Form } from 'antd';
-import { getDirectors, createDirector, putDirector, deleteDirector} from '../api/api';
-import  {DirectorForm}  from '../components/DirectorForm';
-import {DirectorDto} from "../types/models";
+import { Table, Button, Modal, Space, Tag, message, Popconfirm, Form, Input } from 'antd';
+import { getDirectors, createDirector, putDirector, deleteDirector } from '../api/api';
+import { DirectorDto } from "../types/models";
 
 const DirectorsPage: React.FC = () => {
     const [directors, setDirectors] = useState<DirectorDto[]>([]);
     const [loading, setLoading] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [editingDirector, setEditingDirector] = useState<DirectorDto | null>(null);
-    const [form] = Form.useForm<DirectorDto>();
+    const [form] = Form.useForm();
 
     useEffect(() => {
         fetchDirectors();
@@ -30,17 +29,23 @@ const DirectorsPage: React.FC = () => {
     const handleSubmit = async () => {
         try {
             const values = await form.validateFields();
+            const directorDto: DirectorDto = {
+                ...(editingDirector || {}),
+                ...values
+            };
+
             if (editingDirector) {
-                await putDirector(editingDirector.id, values);
-                message.success('Director updated successfully');
+                await putDirector(directorDto);
+                message.success('Director putd successfully');
             } else {
-                await createDirector(values);
+                await createDirector(directorDto);
                 message.success('Director created successfully');
             }
+
             handleModalClose();
             fetchDirectors();
         } catch (error) {
-            message.error('Error saving director');
+            message.error(error instanceof Error ? error.message : 'Error saving director');
         }
     };
 
@@ -100,7 +105,7 @@ const DirectorsPage: React.FC = () => {
             render: (films: any[]) => (
                 <>
                     {films?.map(film => (
-                        <Tag key={film.id}>{film.title} {film.year}</Tag>
+                        <Tag key={film.id}>{film.title} ({film.year})</Tag>
                     ))}
                 </>
             ),
@@ -113,7 +118,7 @@ const DirectorsPage: React.FC = () => {
                     <Button onClick={() => handleEditClick(record)}>Edit</Button>
                     <Popconfirm
                         title="Are you sure to delete this director?"
-                        onConfirm={() => handleDelete(record.id)}
+                        onConfirm={() => handleDelete(record.id!)}
                         okText="Yes"
                         cancelText="No"
                     >
@@ -147,10 +152,40 @@ const DirectorsPage: React.FC = () => {
                 visible={isModalVisible}
                 onOk={handleSubmit}
                 onCancel={handleModalClose}
-                width={800}
+                width={600}
                 destroyOnClose
             >
-                <DirectorForm form={form} />
+                <Form form={form} layout="vertical">
+                    <Form.Item
+                        name="firstName"
+                        label="First Name"
+                        rules={[
+                            { required: true, message: 'Please input first name!' },
+                            { max: 20, message: 'Max length is 20 characters' }
+                        ]}
+                    >
+                        <Input />
+                    </Form.Item>
+
+                    <Form.Item
+                        name="secondName"
+                        label="Second Name"
+                        rules={[{ max: 20, message: 'Max length is 20 characters' }]}
+                    >
+                        <Input />
+                    </Form.Item>
+
+                    <Form.Item
+                        name="lastName"
+                        label="Last Name"
+                        rules={[
+                            { required: true, message: 'Please input last name!' },
+                            { max: 20, message: 'Max length is 20 characters' }
+                        ]}
+                    >
+                        <Input />
+                    </Form.Item>
+                </Form>
             </Modal>
         </div>
     );

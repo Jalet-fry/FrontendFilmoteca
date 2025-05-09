@@ -28,7 +28,8 @@ export const ActorList = () => {
     const handleUpdate = async (e: React.FormEvent) => {
         e.preventDefault();
         if (editingActor && editingActor.id) {
-            await putActor(editingActor.id, editingActor);
+            // await putActor(editingActor.id, editingActor);
+            await putActor(editingActor);
             setEditingActor(null);
             loadActors();
         }

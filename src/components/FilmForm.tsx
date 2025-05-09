@@ -23,7 +23,10 @@ export const FilmForm: React.FC<FilmFormProps> = ({ form, directors, actors }) =
             <Form.Item
                 name="title"
                 label="Title"
-                rules={[{ required: true, message: 'Please input film title!' }]}
+                rules={[
+                    { required: true, message: 'Please input film title!' },
+                    { max: 20, message: 'Title must be at most 20 characters' }
+                ]}
             >
                 <Input />
             </Form.Item>
@@ -31,9 +34,12 @@ export const FilmForm: React.FC<FilmFormProps> = ({ form, directors, actors }) =
             <Form.Item
                 name="year"
                 label="Year"
-                rules={[{ required: true, message: 'Please input release year!' }]}
+                rules={[
+                    { required: true, message: 'Please input release year!' },
+                    { type: 'number', min: 1896, max: 2077 }
+                ]}
             >
-                <InputNumber min={1896} max={2077} style={{ width: '100%' }} />
+                <InputNumber style={{ width: '100%' }} />
             </Form.Item>
 
             <Form.Item
@@ -44,7 +50,7 @@ export const FilmForm: React.FC<FilmFormProps> = ({ form, directors, actors }) =
                 <Select placeholder="Select director">
                     {directors.map(director => (
                         <Option key={director.id} value={director.id}>
-                            {director.firstName} {director.secondName} {director.lastName}
+                            {`${director.firstName} ${director.secondName || ''} ${director.lastName}`}
                         </Option>
                     ))}
                 </Select>
@@ -57,7 +63,7 @@ export const FilmForm: React.FC<FilmFormProps> = ({ form, directors, actors }) =
                 <Select mode="multiple" placeholder="Select actors">
                     {actors.map(actor => (
                         <Option key={actor.id} value={actor.id}>
-                            {actor.firstName} {actor.secondName} {actor.lastName}
+                            {`${actor.firstName} ${actor.secondName || ''} ${actor.lastName}`}
                         </Option>
                     ))}
                 </Select>
