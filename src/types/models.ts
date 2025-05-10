@@ -1,9 +1,15 @@
 export interface Person {
     id: number;
-    firstName: string;
+    firstName?: string;
     secondName?: string;
-    lastName: string;
+    lastName?: string;
 }
+
+export const getFullName = (person?: Person): string => {
+    if (!person) return ''; // Handle undefined person
+    return `${person.firstName || ''} ${person.secondName || ''} ${person.lastName || ''}`.replace(/\s+/g, ' ').trim();
+};
+
 
 export interface ActorDto extends Person {
     films?: FilmDto[];

@@ -3,6 +3,13 @@ import { ActorDto, DirectorDto, FilmDto } from "../types/models";
 
 const API_URL = "http://localhost:8080";
 
+const handleResponse = async (response: Response) => {
+    if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'Request failed');
+    }
+    return response.json();
+};
 // Actors
 export const getActors = async (): Promise<ActorDto[]> => {
     const response = await fetch(`${API_URL}/actors/all`);
@@ -20,7 +27,7 @@ export const createActor = async (actor: Omit<ActorDto, "id">): Promise<ActorDto
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(actor),
     });
-    return response.json();
+    return handleResponse(response);
 };
 
 export const putActor = async (actor: ActorDto): Promise<void> => {
@@ -48,12 +55,12 @@ export const deleteActor = async (id: number): Promise<void> => {
 // Directors
 export const getDirectors = async (): Promise<DirectorDto[]> => {
     const response = await fetch(`${API_URL}/directors/all`);
-    return response.json();
+    return handleResponse(response);
 };
 
 export const getDirectorById = async (id: number): Promise<DirectorDto> => {
     const response = await fetch(`${API_URL}/directors/${id}`);
-    return response.json();
+    return handleResponse(response);
 };
 
 export const createDirector = async (director: Omit<DirectorDto, "id">): Promise<DirectorDto> => {
@@ -62,7 +69,7 @@ export const createDirector = async (director: Omit<DirectorDto, "id">): Promise
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(director),
     });
-    return response.json();
+    return handleResponse(response);
 };
 
 export const putDirector = async (director: DirectorDto): Promise<void> => {
@@ -90,12 +97,12 @@ export const deleteDirector = async (id: number): Promise<void> => {
 //Film
 export const getFilms = async (): Promise<FilmDto[]> => {
     const response = await fetch(`${API_URL}/films/all`);
-    return response.json();
+    return handleResponse(response);
 };
 
 export const getFilmById = async (id: number): Promise<FilmDto> => {
     const response = await fetch(`${API_URL}/films/${id}`);
-    return response.json();
+    return handleResponse(response);
 };
 
 export const createFilm = async (film: Omit<FilmDto, "id">): Promise<FilmDto> => {
@@ -104,7 +111,7 @@ export const createFilm = async (film: Omit<FilmDto, "id">): Promise<FilmDto> =>
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(film),
     });
-    return response.json();
+    return handleResponse(response);
 };
 
 export const putFilm = async (film: FilmDto): Promise<void> => {

@@ -1,20 +1,13 @@
 import React from 'react';
 import { Form, Input, Select, InputNumber } from 'antd';
-import { FilmDto } from "../types/models";
+import { FilmDto, getFullName , DirectorDto, ActorDto} from "../types/models";
 
 const { Option } = Select;
 
-interface Person {
-    id: number;
-    firstName: string;
-    secondName?: string;
-    lastName: string;
-}
-
 interface FilmFormProps {
     form: any;
-    directors: Person[];
-    actors: Person[];
+    directors: DirectorDto[];
+    actors: ActorDto[];
 }
 
 export const FilmForm: React.FC<FilmFormProps> = ({ form, directors, actors }) => {
@@ -50,7 +43,7 @@ export const FilmForm: React.FC<FilmFormProps> = ({ form, directors, actors }) =
                 <Select placeholder="Select director">
                     {directors.map(director => (
                         <Option key={director.id} value={director.id}>
-                            {`${director.firstName} ${director.secondName || ''} ${director.lastName}`}
+                            {getFullName(director)}
                         </Option>
                     ))}
                 </Select>
@@ -63,7 +56,7 @@ export const FilmForm: React.FC<FilmFormProps> = ({ form, directors, actors }) =
                 <Select mode="multiple" placeholder="Select actors">
                     {actors.map(actor => (
                         <Option key={actor.id} value={actor.id}>
-                            {`${actor.firstName} ${actor.secondName || ''} ${actor.lastName}`}
+                            {getFullName(actor)}
                         </Option>
                     ))}
                 </Select>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Table, Button, Modal, Space, Tag, message, Popconfirm, Form } from 'antd';
 import { getFilms, createFilm, putFilm, deleteFilm, getActors, getDirectors } from '../api/api';
 import { FilmForm } from '../components/FilmForm';
-import { FilmDto } from "../types/models";
+import { FilmDto, DirectorDto, ActorDto, getFullName } from "../types/models";
 
 const FilmsPage: React.FC = () => {
     const [films, setFilms] = useState<FilmDto[]>([]);
@@ -39,16 +39,23 @@ const FilmsPage: React.FC = () => {
         try {
             const values = await form.validateFields();
 
+            // Находим полные объекты директора и актеров
+            const director = directors.find(d => d.id === values.directorId);
+            const selectedActors = actors.filter(a => values.actorIds?.includes(a.id));
+
+            if (!director) {
+                throw new Error('Director not found');
+            }
+
             const filmDto: FilmDto = {
                 ...(editingFilm || {}),
-                id : values.id,
                 title: values.title,
                 year: values.year,
-                director: directors.find(d => d.id === values.directorId)!,
-                actors: actors.filter(a => values.actorIds?.includes(a.id)) || []
+                director: director,
+                actors: selectedActors,
             };
 
-            if (editingFilm) {
+            if (editingFilm?.id) {
                 await putFilm(filmDto);
                 message.success('Film updated successfully');
             } else {
@@ -113,21 +120,18 @@ const FilmsPage: React.FC = () => {
         },
         {
             title: 'Director',
-            dataIndex: 'director',
+            dataIndex: ['director'],
             key: 'director',
-            render: (director: any) => (
-                `${director?.firstName} ${director?.secondName || ''} ${director?.lastName}`
-            ),
+            render: (director: DirectorDto) => getFullName(director),
         },
         {
             title: 'Actors',
-            dataIndex: 'actors',
+            dataIndex: ['actors'],
             key: 'actors',
             render: (actors: any[]) => (
                 <>
                     {actors?.map(actor => (
-                        <Tag key={actor.id}>
-                            {`${actor.firstName} ${actor.secondName || ''} ${actor.lastName}`}
+                        <Tag key={actor.id}>{getFullName(actor)}
                         </Tag>
                     ))}
                 </>

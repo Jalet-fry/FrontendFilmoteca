@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Modal, Space, Tag, message, Popconfirm, Form, Input } from 'antd';
 import { getActors, createActor, putActor, deleteActor } from '../api/api';
-import { ActorDto } from "../types/models";
+import {ActorDto, getFullName} from "../types/models";
 
 const ActorsPage: React.FC = () => {
     const [actors, setActors] = useState<ActorDto[]>([]);
@@ -105,7 +105,9 @@ const ActorsPage: React.FC = () => {
             render: (films: any[]) => (
                 <>
                     {films?.map(film => (
-                        <Tag key={film.id}>{film.title} ({film.year})</Tag>
+                        <Tag key={film.id}>
+                            {film.title} ({film.year}) - {getFullName(film.director)}
+                        </Tag>
                     ))}
                 </>
             ),
@@ -160,7 +162,7 @@ const ActorsPage: React.FC = () => {
                         name="firstName"
                         label="First Name"
                         rules={[
-                            { required: true, message: 'Please input first name!' },
+                            // { required: true, message: 'Please input first name!' },
                             { max: 20, message: 'Max length is 20 characters' }
                         ]}
                     >
@@ -179,7 +181,7 @@ const ActorsPage: React.FC = () => {
                         name="lastName"
                         label="Last Name"
                         rules={[
-                            { required: true, message: 'Please input last name!' },
+                            // { required: true, message: 'Please input last name!' },
                             { max: 20, message: 'Max length is 20 characters' }
                         ]}
                     >
