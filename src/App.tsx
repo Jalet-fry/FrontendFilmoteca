@@ -15,10 +15,10 @@ const App: React.FC = () => {
                 <Sider collapsible>
                     <div className="logo" style={{ height: '32px', margin: '16px', background: 'rgba(255, 255, 255, 0.3)' }} />
                     <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
-                        <Menu.Item key="1" icon={<UserOutlined />}>
+                        <Menu.Item key="1" icon={<TeamOutlined />}>
                             <Link to="/actors">Actors</Link>
                         </Menu.Item>
-                        <Menu.Item key="2" icon={<TeamOutlined />}>
+                        <Menu.Item key="2" icon={<UserOutlined/>}>
                             <Link to="/directors">Directors</Link>
                         </Menu.Item>
                         <Menu.Item key="3" icon={<VideoCameraOutlined />}>

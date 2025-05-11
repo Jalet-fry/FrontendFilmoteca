@@ -114,9 +114,9 @@ const FilmsPage: React.FC = () => {
 
     const columns = [
         {
-            title: 'ID',
-            dataIndex: 'id',
-            key: 'id',
+            title: '№',
+            key: 'index',
+            render: (_: any, __: any, index: number) => index + 1,
         },
         {
             title: 'Title',
