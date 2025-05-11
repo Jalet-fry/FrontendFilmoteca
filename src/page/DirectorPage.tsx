@@ -106,7 +106,7 @@ const DirectorsPage: React.FC = () => {
                 <>
                     {films?.map(film => (
                         <Tag key={film.id}>
-                            {film.title} ({film.year}) - {getFullName(film.director)}
+                            {film.title} ({film.year})
                         </Tag>
                     ))}
                 </>

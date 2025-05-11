@@ -38,10 +38,18 @@ const FilmsPage: React.FC = () => {
     const handleSubmit = async () => {
         try {
             const values = await form.validateFields();
+            console.log("Form values:", values); // 1. Что введено в форме
+
 
             // Находим полные объекты директора и актеров
             const director = directors.find(d => d.id === values.directorId);
             const selectedActors = actors.filter(a => values.actorIds?.includes(a.id));
+            console.log("Selected director:", director); // 2. Найденный режиссёр
+            console.log("Selected actors:", selectedActors); // 3. Выбранные актёры
+            // Очищаем вложенные films у director и actors
+            const cleanedDirector = director ? { ...director, id : null, films: null } : null;
+            const cleanedActors = selectedActors.map(actor => ({ ...actor, id : null, films: null }));
+
 
             if (!director) {
                 throw new Error('Director not found');
@@ -51,10 +59,11 @@ const FilmsPage: React.FC = () => {
                 ...(editingFilm || {}),
                 title: values.title,
                 year: values.year,
-                director: director,
-                actors: selectedActors,
+                director: cleanedDirector,
+                actors: cleanedActors,
             };
 
+            console.log("Data being sent to server:", filmDto); // 4. Итоговый объект
             if (editingFilm?.id) {
                 await putFilm(filmDto);
                 message.success('Film updated successfully');
@@ -66,6 +75,7 @@ const FilmsPage: React.FC = () => {
             handleModalClose();
             fetchData();
         } catch (error) {
+            console.error("Error in handleSubmit:", error); // 5. Ошибки
             message.error(error instanceof Error ? error.message : 'Error saving film');
         }
     };
