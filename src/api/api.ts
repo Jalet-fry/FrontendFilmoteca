@@ -22,39 +22,50 @@ export const getActorById = async (id: number): Promise<ActorDto> => {
 };
 
 export const createActor = async (actor: Omit<ActorDto, "id">): Promise<void> => {
-    // const response = await fetch(`${API_URL}/actors`, {
-    //     method: "POST",
-    //     headers: { "Content-Type": "application/json" },
-    //     body: JSON.stringify(actor),
-    // });
-    // return handleResponse(response);
-    await fetch(`${API_URL}/actors`, {
+    const response = await fetch(`${API_URL}/actors`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(actor),
     });
+    if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'Failed to create actor');
+    }
 };
 
 export const putActor = async (actor: ActorDto): Promise<void> => {
-    await fetch(`${API_URL}/actors`, {
+    const response = await fetch(`${API_URL}/actors`, {
+
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(actor),
     });
+    if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'Failed to create actor');
+    }
 };
 
 export const patchActor = async (actor: Partial<ActorDto>): Promise<void> => {
-    await fetch(`${API_URL}/actors`, {
+    const response = await fetch(`${API_URL}/actors`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(actor),
     });
+    if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'Failed to patch actor');
+    }
 };
 
 export const deleteActor = async (id: number): Promise<void> => {
-    await fetch(`${API_URL}/actors/${id}`, {
+    const response = await fetch(`${API_URL}/actors/${id}`, {
         method: "DELETE",
     });
+    if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'Failed to delete actor');
+    }
 };
 
 // Directors
@@ -69,33 +80,49 @@ export const getDirectorById = async (id: number): Promise<DirectorDto> => {
 };
 
 export const createDirector = async (director: Omit<DirectorDto, "id">): Promise<void> => {
-    await fetch(`${API_URL}/directors`, {
+    const response = await fetch(`${API_URL}/directors`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(director),
     });
+    if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'Failed to create director');
+    }
 };
 
 export const putDirector = async (director: DirectorDto): Promise<void> => {
-    await fetch(`${API_URL}/directors`, {
+    const response = await fetch(`${API_URL}/directors`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(director),
     });
+    if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'Failed to put director');
+    }
 };
 
 export const patchDirector = async (director: Partial<DirectorDto>): Promise<void> => {
-    await fetch(`${API_URL}/directors`, {
+    const response = await fetch(`${API_URL}/directors`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(director),
     });
+    if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'Failed to patch director');
+    }
 };
 
 export const deleteDirector = async (id: number): Promise<void> => {
-    await fetch(`${API_URL}/directors/${id}`, {
+    const response = await fetch(`${API_URL}/directors/${id}`, {
         method: "DELETE",
     });
+    if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'Failed to delete director');
+    }
 };
 
 //Film
@@ -110,31 +137,47 @@ export const getFilmById = async (id: number): Promise<FilmDto> => {
 };
 
 export const createFilm = async (film: Omit<FilmDto, "id">): Promise<void> => {
-    await fetch(`${API_URL}/films`, {
+    const response = await fetch(`${API_URL}/films`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(film),
     });
+    if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'Failed to create film');
+    }
 };
 
 export const putFilm = async (film: FilmDto): Promise<void> => {
-    await fetch(`${API_URL}/films`, {
+    const response = await fetch(`${API_URL}/films`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(film),
     });
+    if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'Failed to put film');
+    }
 };
 
 export const patchFilm = async (film: Partial<FilmDto>): Promise<void> => {
-    await fetch(`${API_URL}/films`, {
+    const response = await fetch(`${API_URL}/films`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(film),
     });
+    if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'Failed to patch film');
+    }
 };
 
 export const deleteFilm = async (id: number): Promise<void> => {
-    await fetch(`${API_URL}/films/${id}`, {
+    const response = await fetch(`${API_URL}/films/${id}`, {
         method: "DELETE",
     });
+    if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'Failed to delete film');
+    }
 };
