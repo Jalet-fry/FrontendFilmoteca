@@ -12,6 +12,7 @@ const FilmsPage: React.FC = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [editingFilm, setEditingFilm] = useState<FilmDto | null>(null);
     const [form] = Form.useForm();
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     useEffect(() => {
         fetchData();
@@ -47,8 +48,8 @@ const FilmsPage: React.FC = () => {
             console.log("Selected director:", director); // 2. Найденный режиссёр
             console.log("Selected actors:", selectedActors); // 3. Выбранные актёры
             // Очищаем вложенные films у director и actors
-            const cleanedDirector = director ? { ...director, id : null, films: null } : null;
-            const cleanedActors = selectedActors.map(actor => ({ ...actor, id : null, films: null }));
+            // const cleanedDirector = director ? { ...director, id : null, films: null } : null;
+            // const cleanedActors = selectedActors.map(actor => ({ ...actor, id : null, films: null }));
 
 
             if (!director) {
@@ -59,8 +60,10 @@ const FilmsPage: React.FC = () => {
                 ...(editingFilm || {}),
                 title: values.title,
                 year: values.year,
-                director: cleanedDirector,
-                actors: cleanedActors,
+                // director: cleanedDirector,
+                // actors: cleanedActors,
+                director: director,
+                actors: selectedActors,
             };
 
             console.log("Data being sent to server:", filmDto); // 4. Итоговый объект
@@ -70,13 +73,19 @@ const FilmsPage: React.FC = () => {
             } else {
                 await createFilm(filmDto);
                 message.success('Film created successfully');
+
             }
 
             handleModalClose();
+            // setLoading(true);
+            await new Promise(resolve => setTimeout(resolve, 300));
             fetchData();
         } catch (error) {
             console.error("Error in handleSubmit:", error); // 5. Ошибки
             message.error(error instanceof Error ? error.message : 'Error saving film');
+        } finally {
+            setIsSubmitting(false);
+            setLoading(false);
         }
     };
 
@@ -177,20 +186,28 @@ const FilmsPage: React.FC = () => {
             </Button>
 
             <Table
+                className={loading ? 'table-loading' : 'table-update'}
                 columns={columns}
                 dataSource={films}
                 rowKey="id"
                 loading={loading}
                 bordered
+                pagination={{
+                    pageSize: 5,
+                    showSizeChanger: false,
+                    position: ['bottomCenter'] // Размещаем пагинацию по центру
+                }}
             />
 
             <Modal
                 title={editingFilm ? 'Edit Film' : 'Add Film'}
+                className="modal-fade"
                 visible={isModalVisible}
                 onOk={handleSubmit}
                 onCancel={handleModalClose}
                 width={800}
                 destroyOnClose
+                confirmLoading={isSubmitting}
             >
                 <FilmForm
                     form={form}

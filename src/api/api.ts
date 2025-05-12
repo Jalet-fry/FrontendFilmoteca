@@ -21,13 +21,18 @@ export const getActorById = async (id: number): Promise<ActorDto> => {
     return response.json();
 };
 
-export const createActor = async (actor: Omit<ActorDto, "id">): Promise<ActorDto> => {
-    const response = await fetch(`${API_URL}/actors`, {
+export const createActor = async (actor: Omit<ActorDto, "id">): Promise<void> => {
+    // const response = await fetch(`${API_URL}/actors`, {
+    //     method: "POST",
+    //     headers: { "Content-Type": "application/json" },
+    //     body: JSON.stringify(actor),
+    // });
+    // return handleResponse(response);
+    await fetch(`${API_URL}/actors`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(actor),
     });
-    return handleResponse(response);
 };
 
 export const putActor = async (actor: ActorDto): Promise<void> => {
@@ -63,13 +68,12 @@ export const getDirectorById = async (id: number): Promise<DirectorDto> => {
     return handleResponse(response);
 };
 
-export const createDirector = async (director: Omit<DirectorDto, "id">): Promise<DirectorDto> => {
-    const response = await fetch(`${API_URL}/directors`, {
+export const createDirector = async (director: Omit<DirectorDto, "id">): Promise<void> => {
+    await fetch(`${API_URL}/directors`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(director),
     });
-    return handleResponse(response);
 };
 
 export const putDirector = async (director: DirectorDto): Promise<void> => {
@@ -105,13 +109,12 @@ export const getFilmById = async (id: number): Promise<FilmDto> => {
     return handleResponse(response);
 };
 
-export const createFilm = async (film: Omit<FilmDto, "id">): Promise<FilmDto> => {
-    const response = await fetch(`${API_URL}/films`, {
+export const createFilm = async (film: Omit<FilmDto, "id">): Promise<void> => {
+    await fetch(`${API_URL}/films`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(film),
     });
-    return handleResponse(response);
 };
 
 export const putFilm = async (film: FilmDto): Promise<void> => {

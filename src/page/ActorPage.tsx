@@ -9,6 +9,7 @@ const ActorsPage: React.FC = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [editingActor, setEditingActor] = useState<ActorDto | null>(null);
     const [form] = Form.useForm();
+    const [isSubmitting, setIsSubmitting] = useState(false); // Новое состояние
 
     useEffect(() => {
         fetchActors();
@@ -26,7 +27,9 @@ const ActorsPage: React.FC = () => {
         }
     };
 
+
     const handleSubmit = async () => {
+        setIsSubmitting(true); // Блокируем кнопку
         try {
             const values = await form.validateFields();
             const actorDto: ActorDto = {
@@ -41,11 +44,24 @@ const ActorsPage: React.FC = () => {
                 await createActor(actorDto);
                 message.success('Actor created successfully');
             }
+            // 1. Сразу закрываем модальное окно
+            setIsModalVisible(false);
+            form.resetFields();
+            setEditingActor(null);
 
-            handleModalClose();
-            fetchActors();
+            // 2. Показываем состояние загрузки
+            // setLoading(true);
+
+            // 3. Обновляем данные с небольшой задержкой
+            await new Promise(resolve => setTimeout(resolve, 300));
+            await fetchActors();
+
         } catch (error) {
             message.error(error instanceof Error ? error.message : 'Error saving actor');
+        }
+        finally {
+            setIsSubmitting(false);
+            setLoading(false);
         }
     };
 
@@ -142,20 +158,32 @@ const ActorsPage: React.FC = () => {
             </Button>
 
             <Table
+                className={loading ? 'table-loading' : 'table-update'}
                 columns={columns}
                 dataSource={actors}
                 rowKey="id"
                 loading={loading}
                 bordered
+                pagination={{
+                    pageSize: 5,
+                    showSizeChanger: false,
+                    position: ['bottomCenter'] // Размещаем пагинацию по центру
+                }}
             />
 
             <Modal
                 title={editingActor ? 'Edit Actor' : 'Add Actor'}
+                className="modal-fade"
                 visible={isModalVisible}
                 onOk={handleSubmit}
-                onCancel={handleModalClose}
+                onCancel={() => {
+                    setIsModalVisible(false);
+                    form.resetFields();
+                    setEditingActor(null);
+                }}
                 width={600}
                 destroyOnClose
+                confirmLoading={isSubmitting} // Индикатор загрузки на кнопке
             >
                 <Form form={form} layout="vertical">
                     <Form.Item

@@ -9,6 +9,7 @@ const DirectorsPage: React.FC = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [editingDirector, setEditingDirector] = useState<DirectorDto | null>(null);
     const [form] = Form.useForm();
+    const [isSubmitting, setIsSubmitting] = useState(false); // Новое состояние
 
     useEffect(() => {
         fetchDirectors();
@@ -27,6 +28,7 @@ const DirectorsPage: React.FC = () => {
     };
 
     const handleSubmit = async () => {
+        setIsSubmitting(true);
         try {
             const values = await form.validateFields();
             const directorDto: DirectorDto = {
@@ -42,11 +44,15 @@ const DirectorsPage: React.FC = () => {
                 await createDirector(directorDto);
                 message.success('Director created successfully');
             }
-
             handleModalClose();
+            // setLoading(true);
+            await new Promise(resolve => setTimeout(resolve, 300));
             fetchDirectors();
         } catch (error) {
             message.error(error instanceof Error ? error.message : 'Error saving director');
+        } finally {
+            setIsSubmitting(false);
+            setLoading(false);
         }
     };
 
@@ -143,20 +149,33 @@ const DirectorsPage: React.FC = () => {
             </Button>
 
             <Table
+                className={loading ? 'table-loading' : 'table-update'}
                 columns={columns}
                 dataSource={directors}
                 rowKey="id"
                 loading={loading}
                 bordered
+                pagination={{
+                    pageSize: 5,
+                    showSizeChanger: false,
+                    position: ['bottomCenter'] // Размещаем пагинацию по центру
+                }}
             />
 
             <Modal
                 title={editingDirector ? 'Edit Director' : 'Add Director'}
+                className="modal-fade"
                 visible={isModalVisible}
                 onOk={handleSubmit}
-                onCancel={handleModalClose}
+                onCancel={() => {
+                    setIsModalVisible(false);
+                    form.resetFields();
+                    setEditingDirector(null);
+                }}
                 width={600}
                 destroyOnClose
+                confirmLoading={isSubmitting} // Индикатор загрузки на кнопке
+
             >
                 <Form form={form} layout="vertical">
                     <Form.Item
