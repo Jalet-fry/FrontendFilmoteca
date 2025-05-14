@@ -62,10 +62,10 @@ export const deleteActor = async (id: number): Promise<void> => {
     const response = await fetch(`${API_URL}/actors/${id}`, {
         method: "DELETE",
     });
-    if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || 'Failed to delete actor');
-    }
+    // if (!response.ok) {
+    //     const error = await response.json();
+    //     throw new Error(error.message || 'Failed to delete actor');
+    // }
 };
 
 // Directors
@@ -119,10 +119,10 @@ export const deleteDirector = async (id: number): Promise<void> => {
     const response = await fetch(`${API_URL}/directors/${id}`, {
         method: "DELETE",
     });
-    if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || 'Failed to delete director');
-    }
+    // if (!response.ok) {
+    //     const error = await response.json();
+    //     throw new Error(error.message || 'Failed to delete director');
+    // }
 };
 
 //Film
