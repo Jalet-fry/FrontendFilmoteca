@@ -4,10 +4,11 @@ FROM node:20-alpine as build
 WORKDIR /app
 
 # Копируем package.json и package-lock.json
-COPY package.json package-lock.json ./
+#COPY package.json package-lock.json ./
 
 # Устанавливаем зависимости
-RUN npm install
+#RUN npm install
+
 
 # Копируем весь проект
 COPY . .
