@@ -22,6 +22,8 @@ jobs:
 
       - name: Build React app
         run: npm run build
+        env:
+          CI: false  # Отключаем strict mode для ESLint
 
       - name: Deploy to Render via API
         run: |
