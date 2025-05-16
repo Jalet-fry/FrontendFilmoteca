@@ -1,7 +1,7 @@
 // api/api.ts
 import { ActorDto, DirectorDto, FilmDto } from "../types/models";
 
-const API_URL = "http://localhost:8080";
+const API_URL = "https://filmoteca-8wx7.onrender.com";
 
 const handleResponse = async (response: Response) => {
     if (!response.ok) {
