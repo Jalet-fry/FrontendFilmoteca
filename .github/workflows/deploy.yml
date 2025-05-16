@@ -23,8 +23,9 @@ jobs:
       - name: Build React app
         run: npm run build
 
-      - name: Deploy to Render
-        uses: render-actions/deploy@v1
-        with:
-          service-id: ${{ secrets.RENDER_FRONTEND_SERVICE_ID }}
-          api-key: ${{ secrets.RENDER_API_KEY }}
+      - name: Deploy to Render via API
+        run: |
+          curl -X POST \
+            -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
+            -H "Accept: application/vnd.render+json; version=2021-06-01" \
+            "https://api.render.com/v1/services/${{ secrets.RENDER_FRONTEND_SERVICE_ID }}/deploys"
