@@ -1,4 +1,3 @@
-// api/api.ts
 import { ActorDto, DirectorDto, FilmDto } from "../types/models";
 
 const API_URL = "https://filmoteca-8wx7.onrender.com";
